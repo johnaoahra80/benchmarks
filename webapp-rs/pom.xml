@@ -18,6 +18,7 @@
         <!-- JBoss dependency versions -->
 
         <version.wildfly.maven.plugin>1.0.2.Final</version.wildfly.maven.plugin>
+	<version.jboss.as.maven.plugin>7.7.Final</version.jboss.as.maven.plugin>
 
         <version.jboss.spec.javaee.7.0>1.0.3.Final</version.jboss.spec.javaee.7.0>
 
@@ -116,6 +117,12 @@
                         <groupId>org.wildfly.plugins</groupId>
                         <artifactId>wildfly-maven-plugin</artifactId>
                         <version>${version.wildfly.maven.plugin}</version>
+                        <configuration>
+                            <hostname>${wildfly-hostname}</hostname>
+                            <port>${wildfly-port}</port>
+                            <username>${wildfly-username}</username>
+                            <password>${wildfly-password}</password>
+                        </configuration>
                         <executions>
                             <execution>
                                 <id>deploy</id>
@@ -129,6 +136,36 @@
                 </plugins>
             </build>
         </profile>
+
+
+        <profile>
+            <id>server_as7</id>
+            <activation>
+                <property>
+                    <name>!test.host</name>
+                </property>
+            </activation>
+            <build>
+                <finalName>${project.artifactId}</finalName>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jboss.as.plugins</groupId>
+                        <artifactId>jboss-as-maven-plugin</artifactId>
+                        <version>${version.jboss.as.maven.plugin}</version>
+                        <executions>
+                            <execution>
+                                <id>deploy</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <profile>
             <id>server-undeploy</id>
             <activation>

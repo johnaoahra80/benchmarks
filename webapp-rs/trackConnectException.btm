@@ -1,0 +1,7 @@
+RULE track  Cannot assign requested address
+CLASS java.net.ConnectException
+METHOD <init>
+AT ENTRY
+IF TRUE
+DO Thread.dumpStack()
+ENDRULE
